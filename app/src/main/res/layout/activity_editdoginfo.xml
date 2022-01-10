@@ -5,27 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editMedication"
-        android:layout_width="300dp"
-        android:layout_height="90dp"
-        android:text="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.855"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.441" />
-
     <TextView
         android:id="@+id/textView10"
         android:layout_width="80dp"
         android:layout_height="40dp"
         android:layout_marginEnd="4dp"
         android:text="Handling Info:"
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editHandleInfo"
-        app:layout_constraintHorizontal_bias="0.636"
+        app:layout_constraintHorizontal_bias="0.307"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.719" />
@@ -35,36 +25,14 @@
         android:layout_width="80dp"
         android:layout_height="40dp"
         android:text="Medication: "
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editMedication"
-        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintHorizontal_bias="0.285"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.458" />
-
-    <EditText
-        android:id="@+id/editMiscellaneous"
-        android:layout_width="300dp"
-        android:layout_height="90dp"
-        android:text="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.855"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.872" />
-
-    <EditText
-        android:id="@+id/editFeedInstructions"
-        android:layout_width="300dp"
-        android:layout_height="90dp"
-        android:text="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.855"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.572" />
+        app:layout_constraintVertical_bias="0.468" />
 
     <TextView
         android:id="@+id/textView11"
@@ -72,37 +40,89 @@
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:text="Misc:"
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editMiscellaneous"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.395"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.858" />
+        app:layout_constraintVertical_bias="0.859" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="80dp"
+        android:layout_width="90dp"
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:text="Feeding Instructions:"
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editFeedInstructions"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.421"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.583" />
+        app:layout_constraintVertical_bias="0.567" />
 
     <EditText
         android:id="@+id/editHandleInfo"
-        android:layout_width="300dp"
-        android:layout_height="90dp"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+        android:gravity="bottom"
         android:text="textMultiLine"
+        android:textColor="#000000"
+        android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.855"
+        app:layout_constraintHorizontal_bias="0.963"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.722" />
+        app:layout_constraintVertical_bias="0.721" />
+
+    <EditText
+        android:id="@+id/editFeedInstructions"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+        android:gravity="bottom"
+        android:text="textMultiLine"
+        android:textColor="#000000"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.963"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.57" />
+
+    <EditText
+        android:id="@+id/editMedication"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+        android:gravity="bottom"
+        android:text="textMultiLine"
+        android:textColor="#000000"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.963"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.453" />
+
+    <EditText
+        android:id="@+id/editMiscellaneous"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+        android:gravity="bottom"
+        android:text="textMultiLine"
+        android:textColor="#000000"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.963"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.855" />
 
     <ImageView
         android:id="@+id/editImage"
@@ -120,13 +140,30 @@
         android:id="@+id/editName"
         android:layout_width="200dp"
         android:layout_height="48dp"
+        android:gravity="bottom"
         android:text="textMultiLine"
+        android:textColor="#000000"
+        android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.644"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintVertical_bias="0.342" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name: "
+        android:textColor="#000000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.348" />
 
     <Button
         android:id="@+id/goBackToView"
@@ -135,22 +172,10 @@
         android:text="Go Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.987"
+        app:layout_constraintHorizontal_bias="0.983"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.138"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.325" />
+        app:layout_constraintVertical_bias="0.007" />
 
     <Button
         android:id="@+id/editImageButton"
@@ -159,7 +184,7 @@
         android:text="Edit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.948"
+        app:layout_constraintHorizontal_bias="0.954"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.14" />

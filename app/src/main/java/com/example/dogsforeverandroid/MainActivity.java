@@ -301,11 +301,7 @@ public class MainActivity extends AppCompatActivity{
                         if(result.getResultCode() == RESULT_OK && result.getData() != null) {
                             Bundle bundle = result.getData().getExtras();
                             Bitmap bitmap = (Bitmap) bundle.get("data");
-                            Matrix matrix = new Matrix();
-                            matrix.postRotate(270);
-                            Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
-                            Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
-                            setImage(rotatedBitmap);
+                            setImage(bitmap);
                         }
                     }
                 });
@@ -455,11 +451,11 @@ public class MainActivity extends AppCompatActivity{
                 currentDog = i;
                 setContentView(R.layout.activity_viewdoginfo);
                 ((ImageView)findViewById(R.id.displayImage)).setImageBitmap(dog.getDogPhoto());
-                ((TextView)findViewById(R.id.displayName)).setText("Name: "+dog.getName());
-                ((TextView)findViewById(R.id.displayMedication)).setText("Medications: "+dog.getMedications());
-                ((TextView)findViewById(R.id.displayFeedInstructions)).setText("Feeding Instructions: "+dog.getFeedInstr());
-                ((TextView)findViewById(R.id.displayHandlingInfo)).setText("Handling Info: "+dog.getHandleInfo());
-                ((TextView)findViewById(R.id.displayMisc)).setText("Miscellaneous: "+dog.getMisc());
+                ((TextView)findViewById(R.id.displayName)).setText(dog.getName());
+                ((TextView)findViewById(R.id.displayMedication)).setText(dog.getMedications());
+                ((TextView)findViewById(R.id.displayFeedInstructions)).setText(dog.getFeedInstr());
+                ((TextView)findViewById(R.id.displayHandlingInfo)).setText(dog.getHandleInfo());
+                ((TextView)findViewById(R.id.displayMisc)).setText(dog.getMisc());
                 findViewById(R.id.goBack).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -494,11 +490,11 @@ public class MainActivity extends AppCompatActivity{
                         Dog dog = dogs.get(currentDog);
                         setContentView(R.layout.activity_viewdoginfo);
                         ((ImageView)findViewById(R.id.displayImage)).setImageBitmap(dog.getDogPhoto());
-                        ((TextView)findViewById(R.id.displayName)).setText("Name: "+dog.getName());
-                        ((TextView)findViewById(R.id.displayMedication)).setText("Medications: "+dog.getMedications());
-                        ((TextView)findViewById(R.id.displayFeedInstructions)).setText("Feeding Instructions: "+dog.getFeedInstr());
-                        ((TextView)findViewById(R.id.displayHandlingInfo)).setText("Handling Info: "+dog.getHandleInfo());
-                        ((TextView)findViewById(R.id.displayMisc)).setText("Miscellaneous: "+dog.getMisc());
+                        ((TextView)findViewById(R.id.displayName)).setText(dog.getName());
+                        ((TextView)findViewById(R.id.displayMedication)).setText(dog.getMedications());
+                        ((TextView)findViewById(R.id.displayFeedInstructions)).setText(dog.getFeedInstr());
+                        ((TextView)findViewById(R.id.displayHandlingInfo)).setText(dog.getHandleInfo());
+                        ((TextView)findViewById(R.id.displayMisc)).setText(dog.getMisc());
                         findViewById(R.id.goBack).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -550,11 +546,7 @@ public class MainActivity extends AppCompatActivity{
                         if(result.getResultCode() == RESULT_OK && result.getData() != null) {
                             Bundle bundle = result.getData().getExtras();
                             Bitmap bitmap = (Bitmap) bundle.get("data");
-                            Matrix matrix = new Matrix();
-                            matrix.postRotate(270);
-                            Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
-                            Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
-                            ((ImageView)findViewById(R.id.editImage)).setImageBitmap(rotatedBitmap);
+                            ((ImageView)findViewById(R.id.editImage)).setImageBitmap(bitmap);
                         }
                     }
                 });
