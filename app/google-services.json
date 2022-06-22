@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1002387948440",
+    "firebase_url": "https://dogsforeverandroid-default-rtdb.firebaseio.com",
     "project_id": "dogsforeverandroid",
     "storage_bucket": "dogsforeverandroid.appspot.com"
   },

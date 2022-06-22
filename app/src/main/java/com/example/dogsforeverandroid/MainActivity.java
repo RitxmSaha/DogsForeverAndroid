@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,7 +63,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity{
-
     private static final String TAG = "LOGIN ERROR: ";
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
@@ -73,8 +73,10 @@ public class MainActivity extends AppCompatActivity{
     private ActivityResultLauncher<Intent> cameraLauncherForEdit = null;
     private long shelterID = 0;
     private int topDogID = 0;
-    private int currentDog = -1;
+    private Dog currentDog;
     private int layoutID;
+    private boolean refreshPressed = false;
+    private boolean showArchived;
     private Bitmap currBitmap;
     private ArrayList<Dog> dogs = new ArrayList<Dog>();
     static final int CAMERA_PERM_CODE = 101;
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("1002387948440-qvg56v6g5qqh610pqkv3ncbl6srie34k.apps.googleusercontent.com").requestEmail().build();
         client = GoogleSignIn.getClient(this, gso);
-
+        System.out.println("i made it here");
         initializeActivityLauncher();
         initializeSignInListener();
         initializeCameraLauncher();
@@ -114,10 +116,15 @@ public class MainActivity extends AppCompatActivity{
                     initializeSignOutListener();
                 } else {
                     setContentView(R.layout.activity_shelterinfo);
+                    ((Switch)findViewById(R.id.switch1)).setChecked(false);
+                    showArchived = false;
+                    initializeArchiveSwitch();
                     initializeDogArrayListener();
                     initializeSignOutListener();
                     initializeAddDogListener();
+                    initializeRefreshButton();
                     ((TextView)findViewById(R.id.hello_text)).setText("Hello "+user.getDisplayName()+"!");
+                    updateListView();
                 }
             }
             return;
@@ -125,10 +132,15 @@ public class MainActivity extends AppCompatActivity{
         if(layoutID == R.layout.activity_postlogin) {
             if(shelterID != 0) {
                 setContentView(R.layout.activity_shelterinfo);
+                ((Switch)findViewById(R.id.switch1)).setChecked(false);
+                showArchived = false;
+                initializeArchiveSwitch();
                 initializeSignOutListener();
                 initializeAddDogListener();
+                initializeDogArrayListener();
+                initializeRefreshButton();
+                ((Switch)findViewById(R.id.switch1)).setChecked(false);
                 ((TextView)findViewById(R.id.hello_text)).setText("Hello "+user.getDisplayName()+"!");
-                updateListView();
                 return;
             } else {
                 setContentView(R.layout.activity_postlogin);
@@ -257,12 +269,6 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-
-
-
-
-
-
     private void askCameraPermissions() {
         if(androidx.core.content.ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
@@ -384,20 +390,23 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 setContentView(R.layout.activity_shelterinfo);
+                ((Switch)findViewById(R.id.switch1)).setChecked(false);
+                showArchived = false;
+                initializeArchiveSwitch();
                 initializeSignOutListener();
                 initializeAddDogListener();
+                initializeRefreshButton();
                 ((TextView)findViewById(R.id.hello_text)).setText("Hello "+user.getDisplayName()+"!");
-                updateArrayOfDogs();
             }
         });
     }
 
     public void updateArrayOfDogs() {
+        dogs.clear();
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
         myRef.child("ShelterID").orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dogs.clear();
                 if(snapshot.exists() != true) {
                     return;
                 }
@@ -414,6 +423,8 @@ public class MainActivity extends AppCompatActivity{
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             dog.setBitmap(bitmap);
                             dogs.add(dog);
+                            System.out.println(dogs.size());
+                            System.out.println(snapshot.getChildrenCount());
                             if(dogs.size() == snapshot.getChildrenCount()) {
                                 updateListView();
                                 return;
@@ -437,8 +448,12 @@ public class MainActivity extends AppCompatActivity{
         ListView lv = (ListView)findViewById(R.id.ListView);
         ArrayList<String> arrayList = new ArrayList<String>();
         Collections.sort(dogs, new ByID());
+        ArrayList<Dog> dogsShown = new ArrayList<Dog>();
         for(Dog dog: dogs) {
-            arrayList.add(dog.getListViewString());
+            if(dog.isArchived() == showArchived) {
+                dogsShown.add(dog);
+                arrayList.add(dog.getListViewString());
+            }
         }
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,arrayList);
         if(lv == null) return;
@@ -447,8 +462,8 @@ public class MainActivity extends AppCompatActivity{
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Dog dog = dogs.get(i);
-                currentDog = i;
+                Dog dog = dogsShown.get(i);
+                currentDog = dog;
                 setContentView(R.layout.activity_viewdoginfo);
                 ((ImageView)findViewById(R.id.displayImage)).setImageBitmap(dog.getDogPhoto());
                 ((TextView)findViewById(R.id.displayName)).setText(dog.getName());
@@ -460,6 +475,14 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void onClick(View view) {
                         setContentView(R.layout.activity_shelterinfo);
+                        if(!currentDog.isArchived()) {
+                            ((Switch)findViewById(R.id.switch1)).setChecked(false);
+                            showArchived = false;
+                        } else {
+                            ((Switch)findViewById(R.id.switch1)).setChecked(true);
+                            showArchived = true;
+                        }
+                        initializeArchiveSwitch();
                         initializeSignOutListener();
                         initializeAddDogListener();
                         ((TextView)findViewById(R.id.hello_text)).setText("Hello "+user.getDisplayName()+"!");
@@ -476,7 +499,7 @@ public class MainActivity extends AppCompatActivity{
         findViewById(R.id.editInfo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dog dog = dogs.get(currentDog);
+                Dog dog = currentDog;
                 setContentView(R.layout.activity_editdoginfo);
                 ((ImageView)findViewById(R.id.editImage)).setImageBitmap(dog.getDogPhoto());
                 ((EditText)findViewById(R.id.editName)).setText(dog.getName());
@@ -484,10 +507,11 @@ public class MainActivity extends AppCompatActivity{
                 ((EditText)findViewById(R.id.editFeedInstructions)).setText(dog.getFeedInstr());
                 ((EditText)findViewById(R.id.editHandleInfo)).setText(dog.getHandleInfo());
                 ((EditText)findViewById(R.id.editMiscellaneous)).setText(dog.getMisc());
+                ((Switch)findViewById(R.id.editArchive)).setChecked(dog.isArchived());
                 findViewById(R.id.goBackToView).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Dog dog = dogs.get(currentDog);
+                        Dog dog = currentDog;
                         setContentView(R.layout.activity_viewdoginfo);
                         ((ImageView)findViewById(R.id.displayImage)).setImageBitmap(dog.getDogPhoto());
                         ((TextView)findViewById(R.id.displayName)).setText(dog.getName());
@@ -499,8 +523,13 @@ public class MainActivity extends AppCompatActivity{
                             @Override
                             public void onClick(View view) {
                                 setContentView(R.layout.activity_shelterinfo);
+                                ((Switch)findViewById(R.id.switch1)).setChecked(false);
+                                showArchived = false;
+                                initializeArchiveSwitch();
                                 initializeSignOutListener();
                                 initializeAddDogListener();
+                                initializeDogArrayListener();
+                                initializeRefreshButton();
                                 ((TextView)findViewById(R.id.hello_text)).setText("Hello "+user.getDisplayName()+"!");
                                 updateListView();
                                 return;
@@ -512,7 +541,6 @@ public class MainActivity extends AppCompatActivity{
                 findViewById(R.id.saveInfo).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         editDogInfoDatabase();
                     }
                 });
@@ -586,12 +614,13 @@ public class MainActivity extends AppCompatActivity{
             return;
         }
 
-        Dog dog = dogs.get(currentDog);
+        Dog dog = currentDog;
         dog.setName(((EditText)findViewById(R.id.editName)).getText().toString());
         dog.setMedications(((EditText)findViewById(R.id.editMedication)).getText().toString());
         dog.setFeedInstr(((EditText)findViewById(R.id.editFeedInstructions)).getText().toString());
         dog.setHandleInfo(((EditText)findViewById(R.id.editHandleInfo)).getText().toString());
         dog.setMisc(((EditText)findViewById(R.id.editMiscellaneous)).getText().toString());
+        dog.setArchived(((Switch)findViewById(R.id.editArchive)).isChecked());
         BitmapDrawable drawable = (BitmapDrawable)(((ImageView)findViewById(R.id.editImage)).getDrawable());
         dog.setBitmap(drawable.getBitmap());
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
@@ -623,10 +652,15 @@ public class MainActivity extends AppCompatActivity{
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 System.out.println("upload success");
                 setContentView(R.layout.activity_shelterinfo);
+                ((Switch)findViewById(R.id.switch1)).setChecked(false);
+                showArchived = false;
+                initializeArchiveSwitch();
                 initializeSignOutListener();
                 initializeAddDogListener();
+                initializeDogArrayListener();
+                initializeRefreshButton();
                 ((TextView)findViewById(R.id.hello_text)).setText("Hello "+user.getDisplayName()+"!");
-                updateArrayOfDogs();
+                updateListView();
             }
         });
     }
@@ -636,7 +670,6 @@ public class MainActivity extends AppCompatActivity{
             return Integer.compare(o1.getDogUID(),o2.getDogUID());
         }
     }
-
 
 
     public void getHighestCurrID() {
@@ -710,6 +743,28 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
+    public void initializeArchiveSwitch() {
+        findViewById(R.id.switch1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showArchived = ((Switch) findViewById(R.id.switch1)).isChecked();
+                updateListView();
+                }
+            });
+    }
+
+    public void initializeRefreshButton() {
+        findViewById(R.id.refreshList).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(refreshPressed) return;
+                refreshPressed = true;
+                updateListView();
+                refreshPressed = false;
+            }
+        });
+    }
+
     public void initializeSignInListener() {
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -747,8 +802,13 @@ public class MainActivity extends AppCompatActivity{
                 switch (view.getId()) {
                     case R.id.cancel_button:
                         setContentView(R.layout.activity_shelterinfo);
+                        ((Switch)findViewById(R.id.switch1)).setChecked(false);
+                        showArchived = false;
+                        initializeArchiveSwitch();
                         initializeSignOutListener();
                         initializeAddDogListener();
+                        initializeDogArrayListener();
+                        initializeRefreshButton();
                         ((TextView)findViewById(R.id.hello_text)).setText("Hello "+user.getDisplayName()+"!");
                         updateListView();
                         break;

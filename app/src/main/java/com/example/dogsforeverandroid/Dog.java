@@ -13,6 +13,7 @@ public class Dog {
     private String misc;
     private int dogUID;
     private Bitmap dogPhoto;
+    private boolean archived;
 
     public Dog() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -26,6 +27,18 @@ public class Dog {
         this.misc = misc;
         this.dogUID = dogUID;
         this.dogPhoto = dogPhoto;
+        this.archived = false;
+    }
+
+    public Dog(String name, String medications,String feedInstr, String handleInfo, String misc, int dogUID, Bitmap dogPhoto,boolean archived) {
+        this.name = name;
+        this.medications = medications;
+        this.feedInstr = feedInstr;
+        this.handleInfo = handleInfo;
+        this.misc = misc;
+        this.dogUID = dogUID;
+        this.dogPhoto = dogPhoto;
+        this.archived = archived;
     }
     //nonzero shelterID are real shelter ID's.
 
@@ -37,6 +50,7 @@ public class Dog {
         taskMap.put("handleInfo", handleInfo);
         taskMap.put("misc", misc);
         taskMap.put("dogUID",dogUID);
+        taskMap.put("archived",archived);
         return taskMap;
     }
 
@@ -103,4 +117,8 @@ public class Dog {
     public void setDogPhoto(Bitmap dogPhoto) {
         this.dogPhoto = dogPhoto;
     }
+
+    public boolean isArchived() {return archived;}
+
+    public void setArchived(boolean archived) {this.archived = archived;}
 }
